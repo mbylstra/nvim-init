@@ -96,7 +96,7 @@ function! ToggleNetrw()
         let i = bufnr("$")
         while (i >= 1)
             if (getbufvar(i, "&filetype") == "netrw")
-                silent exe "bwipeout " . i 
+                silent exe "bwipeout " . i
             endif
             let i-=1
         endwhile
@@ -174,34 +174,6 @@ nnoremap <Leader><right> :CmdResizeRight<cr>
 
 " map <Leader>m :botright vnew <Bar> read ! elm make # <CR><CR> <C-W><C-H>
 
-map <Leader>m :call ShowElmMakeOutput()<CR>
-
-function! ShowElmMakeOutput()
-    let currentBufferName = bufname("%")
-    let elmMakeOutput = system("elm-make " . currentBufferName . " --output /dev/null 2>&1")
-    let i = bufnr("$")
-    let g:elmBufferExists = 0
-    while (i >= 1)
-        if (getbufvar(i, "&filetype") == "elmmakeoutput")
-            let g:elmBufferExists = 1
-        endif
-        let i-=1
-    endwhile
-
-    if !g:elmBufferExists
-        rightbelow 80vsplit __ElmMake__
-        setlocal filetype=elmmakeoutput
-        setlocal buftype=nofile
-        let g:elmMakeWindowId = win_getid()
-    endif
-
-    if win_gotoid(g:elmMakeWindowId)
-        normal! ggdG
-        call append(0, split(elmMakeOutput, '\v\n'))
-        normal! gg
-        wincmd w
-    endif
-endfunction
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "" COLORSCHEME TWEAKS
@@ -264,7 +236,7 @@ autocmd BufWritePre *.js Neoformat
 autocmd FileType javascript setlocal formatprg=/Users/michael.bylstra/code/cultureamp/murmur/node_modules/.bin/prettier\ --stdin\ --single-quote\ --trailing-comma\ es5
 " autocmd BufWritePre *.scss Neoformat
 " autocmd FileType scss setlocal formatprg=/Users/michael.bylstra/code/cultureamp/murmur/node_modules/.bin/prettier\ --stdin\ --single-quote\ --trailing-comma\ es5
- 
+
 " Use formatprg when available
 let g:neoformat_try_formatprg = 1
 
