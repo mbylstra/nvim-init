@@ -79,6 +79,9 @@ let g:netrw_winsize = -28
 " keep current directory and the browsing directory the same
 "let g:netrw_keepdir=0
 
+" show when over 80 chars
+" highlight OverLength ctermbg=red ctermfg=fg guibg=#592929
+" match OverLength /\%81v.\+/
 
 " Nerdcommenter settings
 let NERDSpaceDelims=1
@@ -175,19 +178,19 @@ map <Leader>m :call ShowElmMakeOutput()<CR>
 
 function! ShowElmMakeOutput()
     let currentBufferName = bufname("%")
-    let elmMakeOutput = system("elm-make " . currentBufferName . " --warn --output /dev/null 2>&1")
+    let elmMakeOutput = system("elm-make " . currentBufferName . " --output /dev/null 2>&1")
     let i = bufnr("$")
     let g:elmBufferExists = 0
     while (i >= 1)
-        if (getbufvar(i, "&filetype") == "elm-make-output")
+        if (getbufvar(i, "&filetype") == "elmmakeoutput")
             let g:elmBufferExists = 1
         endif
         let i-=1
     endwhile
-        
+
     if !g:elmBufferExists
         rightbelow 80vsplit __ElmMake__
-        setlocal filetype=elm-make-output
+        setlocal filetype=elmmakeoutput
         setlocal buftype=nofile
         let g:elmMakeWindowId = win_getid()
     endif
@@ -250,7 +253,7 @@ let g:ycm_semantic_triggers = {
      \ 'elm' : ['.'],
      \}
 
-autocmd BufWritePost *.elm call ShowElmMakeOutput()
+autocmd BufWritePost *.elm call elm#Lint()
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -270,3 +273,5 @@ let g:neoformat_try_formatprg = 1
 " hi! OverLength ctermbg=red ctermfg=fg guibg=#592929
 " match OverLength /\%81v.\+/
 set colorcolumn=80
+" I can't seem to get this to work:
+highlight Comment cterm=italic
