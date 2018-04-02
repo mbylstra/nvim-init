@@ -1,6 +1,5 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "" PLUGINS
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Specify a directory for plugins
 " - For Neovim: ~/.local/share/nvim/plugged
@@ -21,6 +20,10 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'rafi/awesome-vim-colorschemes'
 Plug 'sbdchd/neoformat'
 Plug 'ludovicchabant/vim-gutentags'
+Plug 'sirver/UltiSnips'
+Plug 'rust-lang/rust.vim'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'benmills/vimux'
 
 " Initialize plugin system
 call plug#end()
@@ -49,8 +52,8 @@ set autoindent
 " set number "I find this unnecessary and adds visual noise
 " set nobackup  (might as well??)
 set laststatus=2
-"set statusline=%F%m%r%h%w%=(%{&ff}/%Y)\ (line\ %l\/%L,\ col\ %c)
-set statusline=%=%t "minimalist statusline: just the current filename, right aligned
+" set statusline=%F%m%r%h%w%=(%{&ff}/%Y)\ (line\ %l\/%L,\ col\ %c)
+set statusline=%F%=%t "minimalist statusline: just the current filename, right aligned
 set wildmenu " Display command line's tab complete options as a menu.
 
 " Mastering vim other suggestions
@@ -125,6 +128,10 @@ if (empty($TMUX))
   if (has("termguicolors"))
     set termguicolors
   endif
+else
+    let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
+    let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
+    set termguicolors
 endif
 
 
@@ -132,6 +139,7 @@ endif
 "" KEYMAPS
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let mapleader="\<SPACE>"
+
 map <Leader>a :Ag<CR>
 command! -bang -nargs=* Ag call fzf#vim#ag(<q-args>, {'options': '--delimiter : --nth 4..'}, <bang>0) "don't let Ag search filenames https://github.com/junegunn/fzf.vim/issues/346
 map <Leader>f :GFiles<CR>
@@ -153,21 +161,26 @@ map <Leader>t <C-^>
 map <Leader>d :ElmShowDocs<CR>
 
 " ctrl hklh to switch windows
-" nnoremap <C-J> <C-W><C-J>
-" nnoremap <C-K> <C-W><C-K>
-" nnoremap <C-L> <C-W><C-L>
-" nnoremap <C-H> <C-W><C-H>
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
 
 " leader hklh to switch windows
-nnoremap <Leader>j <C-W><C-J>
-nnoremap <Leader>k <C-W><C-K>
-nnoremap <Leader>l <C-W><C-L>
-nnoremap <Leader>h <C-W><C-H>
+" nnoremap <Leader>j <C-W><C-J>
+" nnoremap <Leader>k <C-W><C-K>
+" nnoremap <Leader>l <C-W><C-L>
+" nnoremap <Leader>h <C-W><C-H>
 
-nnoremap <Leader><left> :CmdResizeLeft<cr>
-nnoremap <Leader><down> :CmdResizeDown<cr>
-nnoremap <Leader><up> :CmdResizeUp<cr>
-nnoremap <Leader><right> :CmdResizeRight<cr>
+nnoremap <C-Left> :CmdResizeLeft<cr>
+nnoremap <C-Down> :CmdResizeDown<cr>
+nnoremap <C-Up> :CmdResizeUp<cr>
+nnoremap <C-Right> :CmdResizeRight<cr>
+
+" nnoremap <Leader><left> :CmdResizeLeft<cr>
+" nnoremap <Leader><down> :CmdResizeDown<cr>
+" nnoremap <Leader><up> :CmdResizeUp<cr>
+" nnoremap <Leader><right> :CmdResizeRight<cr>
 
 " elm make
 " map <Leader>m :botright vnew | 0read ! elm make %
@@ -191,11 +204,13 @@ hi! EndOfBuffer ctermbg=bg ctermfg=bg guibg=bg guifg=bg
 
 
 " Try to make it a bit more obvious which window a status bar refers to
-hi! StatusLine guifg=fg gui=underline guibg=bg
+" hi! StatusLine guifg=fg gui=underline guibg=bg
+hi! StatusLine guifg=fg gui=underline guibg=#2F343D
 
 " It's pretty obvious which window we're in becuase of the cursor, no no need
 " to highlight the status bar and introduce more colours
-hi! StatusLineNC guifg=fg gui=underline guibg=bg
+" hi! StatusLineNC guifg=fg gui=underline guibg=#23272E
+hi! StatusLineNC guifg=fg gui=underline guibg=#2F343D
 
 " Make theme "one" actually highlight the current window properly (currently
 " superceded by the underline)
@@ -247,3 +262,20 @@ let g:neoformat_try_formatprg = 1
 set colorcolumn=80
 " I can't seem to get this to work:
 highlight Comment cterm=italic
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" RUST
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+let g:rustfmt_autosave = 1
+
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" ULTISNIPS
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+let g:UltiSnipsSnippetsDir = "~/.config/nvim/UltiSnips"
+let g:UltiSnipsExpandTrigger="<c-j>"
+let g:UltiSnipsJumpForwardTrigger="<c-j>"
+let g:UltiSnipsJumpBackwardTrigger="<c-k>"
