@@ -14,6 +14,7 @@ Plug 'rakr/vim-one'
 " fzf
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
+
 Plug 'Valloric/YouCompleteMe'
 Plug 'breuckelen/vim-resize'
 Plug 'scrooloose/nerdcommenter'
@@ -159,6 +160,7 @@ map <Leader>q :q<CR>
 map <Leader>w :w<CR>
 map <Leader>t <C-^>
 map <Leader>d :ElmShowDocs<CR>
+map <Leader>R :ElmTest<CR>
 
 " ctrl hklh to switch windows
 nnoremap <C-J> <C-W><C-J>
@@ -276,6 +278,8 @@ let g:rustfmt_autosave = 1
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 let g:UltiSnipsSnippetsDir = "~/.config/nvim/UltiSnips"
-let g:UltiSnipsExpandTrigger="<c-j>"
-let g:UltiSnipsJumpForwardTrigger="<c-j>"
-let g:UltiSnipsJumpBackwardTrigger="<c-k>"
+
+" UltiSnips triggering
+let g:UltiSnipsExpandTrigger = '<C-j>'
+let g:UltiSnipsJumpForwardTrigger = '<C-j>'
+let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
