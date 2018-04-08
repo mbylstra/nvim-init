@@ -24,6 +24,7 @@ Plug 'sirver/UltiSnips'
 Plug 'rust-lang/rust.vim'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'benmills/vimux'
+Plug 'majutsushi/tagbar'
 
 " Initialize plugin system
 call plug#end()
@@ -159,6 +160,9 @@ map <Leader>q :q<CR>
 map <Leader>w :w<CR>
 map <Leader>t <C-^>
 map <Leader>d :ElmShowDocs<CR>
+nmap <Leader>p o<ESC>p
+nmap <Leader>tb :TagbarOpen fg<CR>
+nmap <Leader>tbc :TagbarClose<CR>
 
 " ctrl hklh to switch windows
 nnoremap <C-J> <C-W><C-J>
