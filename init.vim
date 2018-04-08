@@ -164,7 +164,9 @@ map <Leader>w :w<CR>
 map <Leader>t <C-^>
 map <Leader>d :ElmShowDocs<CR>
 map <Leader>R :ElmTest<CR>
-map <Leader>tb :TagBar<CR>
+nmap <Leader>p o<ESC>p
+nmap <Leader>tb :TagbarOpen fg<CR>
+nmap <Leader>tbc :TagbarClose<CR>
 
 " ctrl hklh to switch windows
 nnoremap <C-J> <C-W><C-J>
