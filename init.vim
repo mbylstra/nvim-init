@@ -25,6 +25,8 @@ Plug 'sirver/UltiSnips'
 Plug 'rust-lang/rust.vim'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'benmills/vimux'
+Plug 'vim-syntastic/syntastic'
+Plug 'majutsushi/tagbar'
 
 " Initialize plugin system
 call plug#end()
@@ -54,7 +56,8 @@ set autoindent
 " set nobackup  (might as well??)
 set laststatus=2
 " set statusline=%F%m%r%h%w%=(%{&ff}/%Y)\ (line\ %l\/%L,\ col\ %c)
-set statusline=%F%=%t "minimalist statusline: just the current filename, right aligned
+" set statusline=%F%=%t "minimalist statusline: just the current filename, right aligned
+set statusline=%=%t "minimalist statusline: just the current filename, right aligned
 set wildmenu " Display command line's tab complete options as a menu.
 
 " Mastering vim other suggestions
@@ -161,6 +164,7 @@ map <Leader>w :w<CR>
 map <Leader>t <C-^>
 map <Leader>d :ElmShowDocs<CR>
 map <Leader>R :ElmTest<CR>
+map <Leader>tb :TagBar<CR>
 
 " ctrl hklh to switch windows
 nnoremap <C-J> <C-W><C-J>
@@ -283,3 +287,54 @@ let g:UltiSnipsSnippetsDir = "~/.config/nvim/UltiSnips"
 let g:UltiSnipsExpandTrigger = '<C-j>'
 let g:UltiSnipsJumpForwardTrigger = '<C-j>'
 let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" SYNTASTIC
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+let g:syntastic_scss_checkers = ['scss_lint']
+let g:syntastic_scss_scss_lint_exec = '/Users/michael.bylstra/.rbenv/shims/scss-lint'
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" STRIP TRAILING WHITESPACE ON SAVE
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+fun! <SID>StripTrailingWhitespaces()
+    let l = line(".")
+    let c = col(".")
+    %s/\s\+$//e
+    call cursor(l, c)
+endfun
+
+autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" BACKUP
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"Turn on backup option
+set backup
+
+"Where to store backups
+set backupdir=~/.vim/backup/
+
+"Make backup before overwriting the current buffer
+set writebackup
+
+"Overwrite the original backup file
+set backupcopy=yes
+
+"Meaningful backup name, ex: filename@2015-04-05.14:59
+au BufWritePre * let &bex = '@' . strftime("%F.%H:%M")
+
+""" testing backup 1 2 3 4 5 6
