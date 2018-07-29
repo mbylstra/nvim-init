@@ -26,6 +26,7 @@ Plug 'rust-lang/rust.vim'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'benmills/vimux'
 Plug 'majutsushi/tagbar'
+Plug 'scrooloose/nerdtree'
 
 " Initialize plugin system
 call plug#end()
@@ -165,6 +166,7 @@ map <Leader>R :ElmTest<CR>
 nmap <Leader>p o<ESC>p
 nmap <Leader>tb :TagbarOpen fg<CR>
 nmap <Leader>tbc :TagbarClose<CR>
+nmap <Leader>t :NERDTreeToggle<CR>
 
 " ctrl hklh to switch windows
 nnoremap <C-J> <C-W><C-J>
