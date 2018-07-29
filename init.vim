@@ -25,9 +25,12 @@ Plug 'sirver/UltiSnips'
 Plug 'rust-lang/rust.vim'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'benmills/vimux'
+" Plug 'vim-syntastic/syntastic'
+Plug 'neomake/neomake'
 Plug 'majutsushi/tagbar'
 Plug 'scrooloose/nerdtree'
 Plug 'chr4/nginx.vim'
+Plug 'tpope/vim-fugitive'
 
 " Initialize plugin system
 call plug#end()
@@ -39,26 +42,25 @@ call plug#end()
 
 set nocompatible
 
-set autoindent
-set expandtab
-set softtabstop=4
-set shiftwidth=4
-
-
 " Mastering vim basic vimrc
 set nocompatible
-set softtabstop=2
+set softtabstop=4
 set shiftwidth=4
 set tabstop=4
+set expandtab
 syntax on
 filetype indent on
 set autoindent
-" set number "I find this unnecessary and adds visual noise
+" set number  " This uses up too much precious space. use <SPACE>ln to show current line number instead
 " set nobackup  (might as well??)
 set laststatus=2
 " set statusline=%F%m%r%h%w%=(%{&ff}/%Y)\ (line\ %l\/%L,\ col\ %c)
-set statusline=%F%=%t "minimalist statusline: just the current filename, right aligned
+set statusline=%F\ \ \ \ \ \ %=%t\ \ "minimalist statusline: just the current filename, right aligned
+" set statusline=%=%t "minimalist statusline: just the current filename, right aligned
 set wildmenu " Display command line's tab complete options as a menu.
+
+" allow yanking to osx clipboard
+set clipboard=unnamed
 
 " Mastering vim other suggestions
 set cursorline
@@ -145,7 +147,7 @@ endif
 let mapleader="\<SPACE>"
 
 map <Leader>a :Ag<CR>
-command! -bang -nargs=* Ag call fzf#vim#ag(<q-args>, {'options': '--delimiter : --nth 4..'}, <bang>0) "don't let Ag search filenames https://github.com/junegunn/fzf.vim/issues/346
+" command! -bang -nargs=* Ag call fzf#vim#ag(<q-args>, {'options': '--delimiter : --nth 4..'}, <bang>0) "don't let Ag search filenames https://github.com/junegunn/fzf.vim/issues/346
 map <Leader>f :GFiles<CR>
 nnoremap <silent> <Leader>F :Files <C-R>=expand('%:h')<CR><CR><Paste>s
 map <Leader>fa :Files<CR>
@@ -168,6 +170,8 @@ nmap <Leader>p o<ESC>p
 nmap <Leader>tb :TagbarOpen fg<CR>
 nmap <Leader>tbc :TagbarClose<CR>
 nmap <Leader>t :NERDTreeToggle<CR>
+" show current line number
+map <Leader>ln :echo line(".")<CR>
 
 " ctrl hklh to switch windows
 nnoremap <C-J> <C-W><C-J>
@@ -233,11 +237,13 @@ if has("autocmd")
   " Enable file type detection
   filetype on
 
+  autocmd FileType elm setlocal ts=4 sts=4 sw=4 expandtab
   autocmd FileType html setlocal ts=2 sts=2 sw=2 expandtab
   autocmd FileType css setlocal ts=2 sts=2 sw=2 expandtab
   autocmd FileType scss setlocal ts=2 sts=2 sw=2 expandtab
   autocmd FileType sass setlocal ts=2 sts=2 sw=2 expandtab
-  autocmd FileType javascript setlocal ts=2 sts=2 sw=2 noexpandtab
+  autocmd FileType javascript setlocal ts=2 sts=2 sw=2 expandtab
+  autocmd FileType ruby setlocal ts=2 sts=2 sw=2 expandtab
 endif
 
 
@@ -256,13 +262,16 @@ autocmd BufWritePost *.elm call elm#Lint()
 "" PRETTIER
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-autocmd BufWritePre *.js Neoformat
-autocmd FileType javascript setlocal formatprg=/Users/michael.bylstra/code/cultureamp/murmur/node_modules/.bin/prettier\ --stdin\ --single-quote\ --trailing-comma\ es5
+" autocmd BufWritePre *.js Neoformat
+" autocmd BufWritePre *.js :Neomake
+" autocmd BufWritePost *.js :e!
+" autocmd FileType javascript setlocal formatprg=/Users/michael.bylstra/code/cultureamp/murmur/node_modules/.bin/prettier\ --stdin\ --single-quote\ --trailing-comma\ es5
 " autocmd BufWritePre *.scss Neoformat
 " autocmd FileType scss setlocal formatprg=/Users/michael.bylstra/code/cultureamp/murmur/node_modules/.bin/prettier\ --stdin\ --single-quote\ --trailing-comma\ es5
 
 " Use formatprg when available
 let g:neoformat_try_formatprg = 1
+" let g:neoformat_run_all_formatters = 1
 
 
 " show when over 80 chars
@@ -290,3 +299,84 @@ let g:UltiSnipsSnippetsDir = "~/.config/nvim/UltiSnips"
 let g:UltiSnipsExpandTrigger = '<C-j>'
 let g:UltiSnipsJumpForwardTrigger = '<C-j>'
 let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" SYNTASTIC
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" set statusline+=%#warningmsg#
+" set statusline+=%{SyntasticStatuslineFlag()}
+" set statusline+=%*
+
+" let g:syntastic_always_populate_loc_list = 1
+" let g:syntastic_auto_loc_list = 1
+" let g:syntastic_check_on_open = 1
+" let g:syntastic_check_on_wq = 0
+"
+" let g:syntastic_scss_checkers = ['scss_lint']
+" let g:syntastic_scss_scss_lint_exec = '/Users/michael.bylstra/.rbenv/shims/scss-lint'
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" NEOMAKE
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+
+call neomake#configure#automake('w')
+let g:neomake_javascript_enabled_makers = ['eslint']
+let g:neomake_javascript_eslint_exe = $PWD .'/node_modules/.bin/eslint'
+" let g:neomake_javascript_eslint_args = ["--fix"]
+
+let g:neomake_scss_enabled_makers = ['scss_lint']
+" let g:neomake_scss_scss_lint_exe = '/Users/michael.bylstra/.rbenv/shims/scss-lint'
+let g:neomake_scss_scss_lint_maker = {
+ \ 'exe': 'scss-lint'
+ \}
+
+
+" let g:neomake_scss_scss_lint_maker = {
+"  \ 'exe': '/Users/michael.bylstra/.rbenv/shims/scss-lint'
+"  \}
+
+" no idea why the config file is not picked up
+" let g:neomake_scss_enabled_makers = ['sass_lint']
+" let g:neomake_scss_sass_lint_maker = {
+"  \ 'args': ['--no-exit', '--verbose', '--format', 'compact', '--config', '/Users/michael.bylstra/code/cultureamp/murmur/.scss-lint.yml'],
+"  \ 'exe': 'sass-lint',
+"  \ 'errorformat': neomake#makers#ft#javascript#eslint()['errorformat']
+"  \}
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" STRIP TRAILING WHITESPACE ON SAVE
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+fun! <SID>StripTrailingWhitespaces()
+    let l = line(".")
+    let c = col(".")
+    %s/\s\+$//e
+    call cursor(l, c)
+endfun
+
+autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" BACKUP
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"Turn on backup option
+set backup
+
+"Where to store backups
+set backupdir=~/.vim/backup/
+
+"Make backup before overwriting the current buffer
+set writebackup
+
+"Overwrite the original backup file
+set backupcopy=yes
+
+"Meaningful backup name, ex: filename@2015-04-05.14:59
+au BufWritePre * let &bex = '@' . strftime("%F.%H:%M")
+
+""" testing backup 1 2 3 4 5 6
