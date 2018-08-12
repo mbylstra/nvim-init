@@ -26,11 +26,12 @@ Plug 'rust-lang/rust.vim'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'benmills/vimux'
 " Plug 'vim-syntastic/syntastic'
-Plug 'neomake/neomake'
+" Plug 'neomake/neomake'
 Plug 'majutsushi/tagbar'
 Plug 'scrooloose/nerdtree'
 Plug 'chr4/nginx.vim'
 Plug 'tpope/vim-fugitive'
+Plug 'w0rp/ale'
 
 " Initialize plugin system
 call plug#end()
@@ -317,21 +318,40 @@ let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
 " let g:syntastic_scss_scss_lint_exec = '/Users/michael.bylstra/.rbenv/shims/scss-lint'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" ALE
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:ale_lint_on_save = 1
+let g:ale_lint_on_text_changed = 'never' "only lint on save
+let g:ale_lint_on_enter = 0 "don't lint when opening a file
+let g:ale_fix_on_save = 1
+let g:ale_javascript_prettier_options = '--single-quote --trailing-comma es5'
+let g:ale_linters = {
+\   'javascript': ['eslint'],
+\   'javascript.jsx': ['eslint'],
+\   'scss': ['scss-lint'],
+\}
+let g:ale_fixers = {
+\   'javascript': ['prettier'],
+\   'javascript.jsx': ['prettier'],
+\   'scss': ['prettier'],
+\}
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "" NEOMAKE
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 
 
-call neomake#configure#automake('w')
-let g:neomake_javascript_enabled_makers = ['eslint']
-let g:neomake_javascript_eslint_exe = $PWD .'/node_modules/.bin/eslint'
-" let g:neomake_javascript_eslint_args = ["--fix"]
-
-let g:neomake_scss_enabled_makers = ['scss_lint']
-" let g:neomake_scss_scss_lint_exe = '/Users/michael.bylstra/.rbenv/shims/scss-lint'
-let g:neomake_scss_scss_lint_maker = {
- \ 'exe': 'scss-lint'
- \}
+" call neomake#configure#automake('w')
+" let g:neomake_javascript_enabled_makers = ['eslint']
+" let g:neomake_javascript_eslint_exe = $PWD .'/node_modules/.bin/eslint'
+" " let g:neomake_javascript_eslint_args = ["--fix"]
+"
+" let g:neomake_scss_enabled_makers = ['scss_lint']
+" " let g:neomake_scss_scss_lint_exe = '/Users/michael.bylstra/.rbenv/shims/scss-lint'
+" let g:neomake_scss_scss_lint_maker = {
+"  \ 'exe': 'scss-lint'
+"  \}
 
 
 " let g:neomake_scss_scss_lint_maker = {
