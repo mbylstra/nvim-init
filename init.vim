@@ -32,6 +32,8 @@ Plug 'scrooloose/nerdtree'
 Plug 'chr4/nginx.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'w0rp/ale'
+Plug 'elixir-editors/vim-elixir'
+Plug 'mhinz/vim-mix-format'
 
 " Initialize plugin system
 call plug#end()
@@ -290,6 +292,12 @@ highlight Comment cterm=italic
 
 let g:rustfmt_autosave = 1
 
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" ELIXIR
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+let g:mix_format_on_save = 1
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
