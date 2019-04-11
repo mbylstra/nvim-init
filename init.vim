@@ -14,26 +14,41 @@ Plug 'rakr/vim-one'
 " fzf
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
+let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -l -g ""'
 
 Plug 'Valloric/YouCompleteMe'
 Plug 'breuckelen/vim-resize'
 Plug 'scrooloose/nerdcommenter'
-Plug 'rafi/awesome-vim-colorschemes'
-Plug 'sbdchd/neoformat'
-Plug 'ludovicchabant/vim-gutentags'
+Plug 'tpope/vim-surround'
+" Plug 'rafi/awesome-vim-colorschemes'  "never use it
+" Plug 'sbdchd/neoformat'   "ale does this now?
+Plug 'ludovicchabant/vim-gutentags'  "making things really slow?
 Plug 'sirver/UltiSnips'
 Plug 'rust-lang/rust.vim'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'benmills/vimux'
+" Plug 'benmills/vimux'  " never use
 " Plug 'vim-syntastic/syntastic'
 " Plug 'neomake/neomake'
-Plug 'majutsushi/tagbar'
-Plug 'scrooloose/nerdtree'
-Plug 'chr4/nginx.vim'
+" Plug 'majutsushi/tagbar'  "never use
+" Plug 'scrooloose/nerdtree'   "does annoying switching
+" Plug 'chr4/nginx.vim'  "never really use it
 Plug 'tpope/vim-fugitive'
 Plug 'w0rp/ale'
+Plug 'Yggdroot/indentLine'
+
 Plug 'elixir-editors/vim-elixir'
 Plug 'mhinz/vim-mix-format'
+Plug 'slashmili/alchemist.vim'
+Plug 'vim-scripts/indentpython.vim'
+
+" JS/React/Flow
+Plug 'pangloss/vim-javascript'
+Plug 'flowtype/vim-flow'
+" Plug 'amadeus/vim-xml'  ' this breaks .ts files
+Plug 'amadeus/vim-jsx'
+
+" Typescript
+Plug 'leafgarland/typescript-vim'
 
 " Initialize plugin system
 call plug#end()
@@ -42,6 +57,8 @@ call plug#end()
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "" CONFIG
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+set encoding=utf-8
 
 set nocompatible
 
@@ -53,7 +70,7 @@ set tabstop=4
 set expandtab
 syntax on
 filetype indent on
-set autoindent
+set smartindent
 " set number  " This uses up too much precious space. use <SPACE>ln to show current line number instead
 " set nobackup  (might as well??)
 set laststatus=2
@@ -79,12 +96,18 @@ set hidden
 set splitright
 set splitbelow
 
+" set conceallevel=0  "stop things from dissapearing! particularly in json
+" files
+
 " let g:netrw_banner = 0  "show the banner: ugly but useful for showing the
-" current state
+"
+set inccommand=nosplit " live display of search/replace current state
 
 colorscheme one
 set background=dark " for the dark version
 " set background=light " for the light version
+
+set list "show tab characters
 
 " set number relativenumber
 let g:netrw_winsize = -28
@@ -119,6 +142,12 @@ function! ToggleNetrw()
     endif
 endfunction
 
+
+" gutentags
+" add gutentags progress to status line
+:set statusline+=%{gutentags#statusline()}
+let g:gutentags_ctags_exclude = ["*.min.js", "*.min.css", "build", "vendor", ".git", "public", "elm-stuff", "tmp", "*.json", "node_modules", ".yarn-cache"]
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "" COLOUR SUPPORT
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -150,10 +179,11 @@ endif
 let mapleader="\<SPACE>"
 
 map <Leader>a :Ag<CR>
-" command! -bang -nargs=* Ag call fzf#vim#ag(<q-args>, {'options': '--delimiter : --nth 4..'}, <bang>0) "don't let Ag search filenames https://github.com/junegunn/fzf.vim/issues/346
-map <Leader>f :GFiles<CR>
-nnoremap <silent> <Leader>F :Files <C-R>=expand('%:h')<CR><CR><Paste>s
-map <Leader>fa :Files<CR>
+command! -bang -nargs=* Ag call fzf#vim#ag(<q-args>, {'options': '--delimiter : --nth 4..'}, <bang>0) "don't let Ag search filenames https://github.com/junegunn/fzf.vim/issues/346
+map <Leader>f :Files<CR>
+" files in current directory
+nnoremap <silent> <Leader>fc :Files <C-R>=expand('%:h')<CR><CR><Paste>s
+map <Leader>fg :GFiles<CR>
 map <Leader>b :Buffers<CR>
 map <Leader>H :History<CR>
 map <Leader>ch :History:<CR>
@@ -175,6 +205,8 @@ nmap <Leader>tbc :TagbarClose<CR>
 nmap <Leader>t :NERDTreeToggle<CR>
 " show current line number
 map <Leader>ln :echo line(".")<CR>
+" follow tag, split window and offer selection if multiple options found
+map <Leader>s] <C-W>g<C-]>
 
 " ctrl hklh to switch windows
 nnoremap <C-J> <C-W><C-J>
@@ -246,10 +278,25 @@ if has("autocmd")
   autocmd FileType scss setlocal ts=2 sts=2 sw=2 expandtab
   autocmd FileType sass setlocal ts=2 sts=2 sw=2 expandtab
   autocmd FileType javascript setlocal ts=2 sts=2 sw=2 expandtab
+  autocmd FileType typescript setlocal ts=2 sts=2 sw=2 expandtab
   autocmd FileType ruby setlocal ts=2 sts=2 sw=2 expandtab
   autocmd FileType nginx setlocal ts=2 sts=2 sw=2 expandtab
   autocmd FileType yaml setlocal ts=4 sts=4 sw=4 expandtab
+  autocmd FileType haml setlocal ts=2 sts=2 sw=2 expandtab
 endif
+
+
+" Python
+" au BufNewFile,BufRead *.py
+"     \ set tabstop=4
+"     \ set softtabstop=4
+"     \ set shiftwidth=4
+"     \ set textwidth=79
+"     \ set expandtab
+"     \ set autoindent
+"     \ set fileformat=unix
+
+" au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/  "not working
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -286,12 +333,33 @@ set colorcolumn=80
 " I can't seem to get this to work:
 highlight Comment cterm=italic
 
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" JAVASCRIPT
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+let g:flow#showquickfix = 0
+
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "" RUST
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 let g:rustfmt_autosave = 1
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" PYTHON
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"python with virtualenv support (not working)
+" py << EOF
+" import os
+" import sys
+" if 'VIRTUAL_ENV' in os.environ:
+"   project_base_dir = os.environ['VIRTUAL_ENV']
+"   activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+"   execfile(activate_this, dict(__file__=activate_this))
+" EOF
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "" ELIXIR
@@ -334,17 +402,22 @@ let g:ale_lint_on_save = 1
 let g:ale_lint_on_text_changed = 'never' "only lint on save
 let g:ale_lint_on_enter = 0 "don't lint when opening a file
 let g:ale_fix_on_save = 1
-let g:ale_javascript_prettier_options = '--single-quote --trailing-comma es5'
+" let g:ale_javascript_prettier_options = '--double-quotes --trailing-comma es5'
 let g:ale_linters = {
-\   'javascript': ['eslint'],
-\   'javascript.jsx': ['eslint'],
+\   'javascript': ['eslint', 'flow'],
+\   'javascript.jsx': ['eslint', 'flow'],
+\   'typescript': ['tslint', 'typecheck', 'tsserver'],
+\   'typescript.tsx': ['tslint', 'typecheck', 'tsserver'],
 \   'scss': ['scsslint'],
+\   'python': ['flake8', 'mypy'],
 \}
 let g:ale_fixers = {
 \   'javascript': ['prettier'],
-\   'javascript.jsx': ['prettier'],
+\   'typescript': ['prettier'],
 \   'scss': ['prettier'],
 \}
+let b:ale_warn_about_trailing_whitespace = 0  "for python
+let g:ale_python_black_options = '--line-length=100'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "" NEOMAKE
@@ -355,7 +428,7 @@ let g:ale_fixers = {
 " call neomake#configure#automake('w')
 " let g:neomake_javascript_enabled_makers = ['eslint']
 " let g:neomake_javascript_eslint_exe = $PWD .'/node_modules/.bin/eslint'
-" " let g:neomake_javascript_eslint_args = ["--fix"]
+" ;et g:neomake_javascript_eslint_args = ["--fix"]
 "
 " let g:neomake_scss_enabled_makers = ['scss_lint']
 " " let g:neomake_scss_scss_lint_exe = '/Users/michael.bylstra/.rbenv/shims/scss-lint'

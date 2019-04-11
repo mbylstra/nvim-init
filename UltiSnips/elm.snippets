@@ -128,7 +128,10 @@ import Html.Extra exposing (static)
 endsnippet
 
 snippet iconpresentation
-Icon.view Icon.presentation (svgAsset "cultureamp-style-guide/icons/some-name.svg") "some-id-icon" |> static
+Icon.view
+    Icon.presentation
+    (svgAsset "cultureamp-style-guide/icons/some-name.svg")
+    > static
 endsnippet
 
 snippet icon
