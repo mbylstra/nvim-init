@@ -51,7 +51,7 @@ set tabstop=4
 set expandtab
 syntax on
 filetype indent on
-set autoindent
+set smartindent
 " set number  " This uses up too much precious space. use <SPACE>ln to show current line number instead
 " set nobackup  (might as well??)
 set laststatus=2
@@ -160,7 +160,7 @@ map <Leader>L :BLines<CR> "now window nav
 " map <Leader>C :Commands<CR> "conflict with nerd commenter
 "map <Leader>e :Lexplore<CR>
 " map <Leader>e :call ToggleNetrw()<CR>
-map <Leader>e :Explore<CR>
+map <Leader>e :Sexplore<CR>
 map <Leader>r :Rex<CR>
 map <Leader>q :q<CR>
 map <Leader>w :w<CR>
