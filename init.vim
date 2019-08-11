@@ -49,6 +49,7 @@ Plug 'amadeus/vim-jsx'
 
 " Typescript
 Plug 'leafgarland/typescript-vim'
+" Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
 
 " Initialize plugin system
 call plug#end()
@@ -88,6 +89,7 @@ set nocompatible
 set backspace=indent,eol,start
 set history=1000
 set showcmd
+set shortmess+=c
 set showmode
 set autoread
 set hidden
@@ -114,39 +116,15 @@ let g:netrw_winsize = -28
 " keep current directory and the browsing directory the same
 "let g:netrw_keepdir=0
 
+" recommended for coc
+set cmdheight=2
+set updatetime=300
+" set signcolumn=yes
+
 " show when over 80 chars
 " highlight OverLength ctermbg=red ctermfg=fg guibg=#592929
 " match OverLength /\%81v.\+/
 
-" Nerdcommenter settings
-let NERDSpaceDelims=1
-let g:NERDDefaultAlign = 'left'
-let g:NERDCommentEmptyLines = 1
-let g:NERDTrimTrailingWhitespace = 1
-
-" Fix for the Lexplore bug: https://www.reddit.com/r/vim/comments/6jcyfj/toggle_lexplore_properly/
-let g:NetrwIsOpen=0
-function! ToggleNetrw()
-    if g:NetrwIsOpen
-        let i = bufnr("$")
-        while (i >= 1)
-            if (getbufvar(i, "&filetype") == "netrw")
-                silent exe "bwipeout " . i
-            endif
-            let i-=1
-        endwhile
-        let g:NetrwIsOpen=0
-    else
-        let g:NetrwIsOpen=1
-        silent Lexplore
-    endif
-endfunction
-
-
-" gutentags
-" add gutentags progress to status line
-:set statusline+=%{gutentags#statusline()}
-let g:gutentags_ctags_exclude = ["*.min.js", "*.min.css", "build", "vendor", ".git", "public", "elm-stuff", "tmp", "*.json", "node_modules", ".yarn-cache"]
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "" COLOUR SUPPORT
@@ -236,6 +214,7 @@ nnoremap <C-Right> :CmdResizeRight<cr>
 " map <Leader>m :botright vnew <Bar> read ! elm make # <CR><CR> <C-W><C-H>
 
 
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "" COLORSCHEME TWEAKS
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -263,6 +242,40 @@ hi! StatusLineNC guifg=fg gui=underline guibg=#2F343D
 " Make theme "one" actually highlight the current window properly (currently
 " superceded by the underline)
 " hi! StatusLine guibg=fg guifg=bg
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" STRIP TRAILING WHITESPACE ON SAVE
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+fun! <SID>StripTrailingWhitespaces()
+    let l = line(".")
+    let c = col(".")
+    %s/\s\+$//e
+    call cursor(l, c)
+endfun
+
+autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" BACKUP
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"Turn on backup option
+set backup
+
+"Where to store backups
+set backupdir=~/.vim/backup/
+
+"Make backup before overwriting the current buffer
+set writebackup
+
+"Overwrite the original backup file
+set backupcopy=yes
+
+"Meaningful backup name, ex: filename@2015-04-05.14:59
+au BufWritePre * let &bex = '@' . strftime("%F.%H:%M")
+
+""" testing backup 1 2 3 4 5 6
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -297,6 +310,45 @@ endif
 "     \ set fileformat=unix
 
 " au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/  "not working
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" NERDCOMMENTER
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let NERDSpaceDelims=1
+let g:NERDDefaultAlign = 'left'
+let g:NERDCommentEmptyLines = 1
+let g:NERDTrimTrailingWhitespace = 1
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" LEXPLORE
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Fix for the Lexplore bug: https://www.reddit.com/r/vim/comments/6jcyfj/toggle_lexplore_properly/
+let g:NetrwIsOpen=0
+function! ToggleNetrw()
+    if g:NetrwIsOpen
+        let i = bufnr("$")
+        while (i >= 1)
+            if (getbufvar(i, "&filetype") == "netrw")
+                silent exe "bwipeout " . i
+            endif
+            let i-=1
+        endwhile
+        let g:NetrwIsOpen=0
+    else
+        let g:NetrwIsOpen=1
+        silent Lexplore
+    endif
+endfunction
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" GUTENTAGS
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" gutentags
+" add gutentags progress to status line
+:set statusline+=%{gutentags#statusline()}
+let g:gutentags_ctags_exclude = ["*.min.js", "*.min.css", "build", "vendor", ".git", "public", "elm-stuff", "tmp", "*.json", "node_modules", ".yarn-cache"]
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -333,6 +385,43 @@ set colorcolumn=80
 " I can't seem to get this to work:
 highlight Comment cterm=italic
 
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" LANGUAGE SERVER PROTOCOL
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" let g:LanguageClient_serverCommands = {
+"     \ 'typescript': ['javascript-typescript-stdio'],
+"     \ 'typescript.tsx': ['javascript-typescript-stdio'],
+"     \ }
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""" CONQUER OF COMPLETION (COC)
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Remap keys for gotos
+" nmap <silent> <Leader>gd <Plug>(coc-definition)
+" nmap <silent> gy <Plug>(coc-type-definition)
+" nmap <silent> gi <Plug>(coc-implementation)
+" nmap <silent> gr <Plug>(coc-references)
+
+
+" Using CocList
+" Show all diagnostics
+" nnoremap <silent> <Leader>a  :<C-u>CocList diagnostics<cr>
+" Manage extensions
+" nnoremap <silent> <Leader>e  :<C-u>CocList extensions<cr>
+" " Show commands
+" nnoremap <silent> <Leader>c  :<C-u>CocList commands<cr>
+" " Find symbol of current document
+" nnoremap <silent> <Leader>o  :<C-u>CocList outline<cr>
+" " Search workspace symbols
+" nnoremap <silent> <Leader>s  :<C-u>CocList -I symbols<cr>
+" " Do default action for next item.
+" nnoremap <silent> <Leader>j  :<C-u>CocNext<CR>
+" " Do default action for previous item.
+" nnoremap <silent> <Leader>k  :<C-u>CocPrev<CR>
+" " Resume latest coc list
+" nnoremap <silent> <Leader>p  :<C-u>CocListResume<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "" JAVASCRIPT
@@ -404,13 +493,13 @@ let g:ale_lint_on_enter = 0 "don't lint when opening a file
 let g:ale_fix_on_save = 1
 " let g:ale_javascript_prettier_options = '--double-quotes --trailing-comma es5'
 let g:ale_linters = {
-\   'javascript': ['eslint', 'flow'],
-\   'javascript.jsx': ['eslint', 'flow'],
-\   'typescript': ['tslint', 'typecheck', 'tsserver'],
-\   'typescript.tsx': ['tslint', 'typecheck', 'tsserver'],
 \   'scss': ['scsslint'],
 \   'python': ['flake8', 'mypy'],
 \}
+" \   'javascript': ['eslint', 'flow'],
+" \   'javascript.jsx': ['eslint', 'flow'],
+" \   'typescript': ['tslint', 'typecheck', 'tsserver'],
+" \   'typescript.tsx': ['tslint', 'typecheck', 'tsserver'],
 let g:ale_fixers = {
 \   'javascript': ['prettier'],
 \   'typescript': ['prettier'],
@@ -450,37 +539,5 @@ let g:ale_python_black_options = '--line-length=100'
 "  \ 'errorformat': neomake#makers#ft#javascript#eslint()['errorformat']
 "  \}
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"" STRIP TRAILING WHITESPACE ON SAVE
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-fun! <SID>StripTrailingWhitespaces()
-    let l = line(".")
-    let c = col(".")
-    %s/\s\+$//e
-    call cursor(l, c)
-endfun
-
-autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
 
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"" BACKUP
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-"Turn on backup option
-set backup
-
-"Where to store backups
-set backupdir=~/.vim/backup/
-
-"Make backup before overwriting the current buffer
-set writebackup
-
-"Overwrite the original backup file
-set backupcopy=yes
-
-"Meaningful backup name, ex: filename@2015-04-05.14:59
-au BufWritePre * let &bex = '@' . strftime("%F.%H:%M")
-
-""" testing backup 1 2 3 4 5 6
