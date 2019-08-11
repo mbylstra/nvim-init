@@ -192,7 +192,7 @@ map <Leader>L :BLines<CR> "now window nav
 " map <Leader>C :Commands<CR> "conflict with nerd commenter
 "map <Leader>e :Lexplore<CR>
 " map <Leader>e :call ToggleNetrw()<CR>
-map <Leader>e :Sexplore<CR>
+map <Leader>e :Explore<CR>
 map <Leader>r :Rex<CR>
 map <Leader>q :q<CR>
 map <Leader>w :w<CR>
