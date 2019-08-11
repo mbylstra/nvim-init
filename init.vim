@@ -415,6 +415,7 @@ let g:ale_fixers = {
 \   'javascript': ['prettier'],
 \   'typescript': ['prettier'],
 \   'scss': ['prettier'],
+\   'python': ['black'],
 \}
 let b:ale_warn_about_trailing_whitespace = 0  "for python
 let g:ale_python_black_options = '--line-length=100'
