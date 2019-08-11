@@ -192,7 +192,7 @@ map <Leader>L :BLines<CR> "now window nav
 " map <Leader>C :Commands<CR> "conflict with nerd commenter
 "map <Leader>e :Lexplore<CR>
 " map <Leader>e :call ToggleNetrw()<CR>
-map <Leader>e :Sexplore<CR>
+map <Leader>e :Explore<CR>
 map <Leader>r :Rex<CR>
 map <Leader>q :q<CR>
 map <Leader>w :w<CR>
@@ -415,6 +415,7 @@ let g:ale_fixers = {
 \   'javascript': ['prettier'],
 \   'typescript': ['prettier'],
 \   'scss': ['prettier'],
+\   'python': ['black'],
 \}
 let b:ale_warn_about_trailing_whitespace = 0  "for python
 let g:ale_python_black_options = '--line-length=100'
