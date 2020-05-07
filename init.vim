@@ -16,7 +16,7 @@ Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
 let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -l -g ""'
 
-Plug 'Valloric/YouCompleteMe'
+" Plug 'Valloric/YouCompleteMe'
 Plug 'breuckelen/vim-resize'
 Plug 'scrooloose/nerdcommenter'
 Plug 'tpope/vim-surround'
@@ -34,7 +34,9 @@ Plug 'christoomey/vim-tmux-navigator'
 " Plug 'chr4/nginx.vim'  "never really use it
 Plug 'tpope/vim-fugitive'
 Plug 'w0rp/ale'
-Plug 'Yggdroot/indentLine'
+" Plug 'Yggdroot/indentLine' -- this was setting conceallevel=2, which made
+Plug 'nathanaelkane/vim-indent-guides'
+" json file quotation marks hidden - very annoying
 
 Plug 'elixir-editors/vim-elixir'
 Plug 'mhinz/vim-mix-format'
@@ -49,7 +51,9 @@ Plug 'amadeus/vim-jsx'
 
 " Typescript
 Plug 'leafgarland/typescript-vim'
+Plug 'peitalin/vim-jsx-typescript'
 " Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " Initialize plugin system
 call plug#end()
@@ -70,8 +74,9 @@ set shiftwidth=4
 set tabstop=4
 set expandtab
 syntax on
-filetype indent on
-set smartindent
+" filetype indent on
+filetype indent off
+" set smartindent #disabled
 " set number  " This uses up too much precious space. use <SPACE>ln to show current line number instead
 " set nobackup  (might as well??)
 set laststatus=2
@@ -98,7 +103,7 @@ set hidden
 set splitright
 set splitbelow
 
-" set conceallevel=0  "stop things from dissapearing! particularly in json
+set conceallevel=0  "stop things from dissapearing! particularly in json
 " files
 
 " let g:netrw_banner = 0  "show the banner: ugly but useful for showing the
@@ -126,6 +131,7 @@ set updatetime=300
 " match OverLength /\%81v.\+/
 
 
+let g:indent_guides_enable_on_vim_startup = 1
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "" COLOUR SUPPORT
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -399,10 +405,10 @@ highlight Comment cterm=italic
 """ CONQUER OF COMPLETION (COC)
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Remap keys for gotos
-" nmap <silent> <Leader>gd <Plug>(coc-definition)
-" nmap <silent> gy <Plug>(coc-type-definition)
-" nmap <silent> gi <Plug>(coc-implementation)
-" nmap <silent> gr <Plug>(coc-references)
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
 
 
 " Using CocList
@@ -495,17 +501,22 @@ let g:ale_fix_on_save = 1
 let g:ale_linters = {
 \   'scss': ['scsslint'],
 \   'python': ['flake8', 'mypy'],
+\   'javascript': ['eslint', 'flow'],
+\   'javascript.jsx': ['eslint', 'flow'],
+\   'bash': ['shellcheck'],
 \}
-" \   'javascript': ['eslint', 'flow'],
-" \   'javascript.jsx': ['eslint', 'flow'],
 " \   'typescript': ['tslint', 'typecheck', 'tsserver'],
+" \   'typescript.tsx': ['tslint', 'typecheck', 'tsserver'],
 " \   'typescript.tsx': ['tslint', 'typecheck', 'tsserver'],
 let g:ale_fixers = {
 \   'javascript': ['prettier'],
 \   'typescript': ['prettier'],
 \   'scss': ['prettier'],
 \   'python': ['black'],
+\   'ruby': ['rubocop'],
 \}
+" Rubocop fixer is not doing anything
+
 let b:ale_warn_about_trailing_whitespace = 0  "for python
 let g:ale_python_black_options = '--line-length=100'
 
