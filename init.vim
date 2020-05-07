@@ -409,12 +409,14 @@ let g:ale_linters = {
 \   'typescript': ['tslint', 'typecheck', 'tsserver'],
 \   'typescript.tsx': ['tslint', 'typecheck', 'tsserver'],
 \   'scss': ['scsslint'],
+\   'css': ['stylelint'],
 \   'python': ['flake8', 'mypy'],
 \}
 let g:ale_fixers = {
 \   'javascript': ['prettier'],
 \   'typescript': ['prettier'],
 \   'scss': ['prettier'],
+\   'css': ['prettier'],
 \   'python': ['black'],
 \}
 let b:ale_warn_about_trailing_whitespace = 0  "for python
