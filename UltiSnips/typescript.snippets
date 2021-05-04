@@ -1,0 +1,16 @@
+snippet sbheader
+export default {
+  title: '$1',
+  component: $2,
+}
+endsnippet
+
+snippet sbstory
+export const $1 = () => (
+  $2;
+)
+
+Simple.story = {
+  name: '$3',
+};
+endsnippet

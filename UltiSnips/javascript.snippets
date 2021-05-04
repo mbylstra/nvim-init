@@ -1,0 +1,19 @@
+snippet uistory
+// @flow
+import { storiesOf, makeUiStoryViewer } from 'ca-storybook';
+import * as React from 'react';
+import { hot } from 'react-hot-loader';
+import $1 from '../$2';
+
+export const storybook = storiesOf('$3', module).add(
+  '$4',
+  () => {
+    const props = {
+      $5
+    };
+    return <$6 {...props} />;
+  }
+);
+
+export const StoryViewer = hot(module)(makeUiStoryViewer(storybook));
+endsnippet
