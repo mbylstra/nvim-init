@@ -22,9 +22,10 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'tpope/vim-surround'
 " Plug 'rafi/awesome-vim-colorschemes'  "never use it
 " Plug 'sbdchd/neoformat'   "ale does this now?
-Plug 'ludovicchabant/vim-gutentags'  "making things really slow?
-" Plug 'sirver/UltiSnips' "temporarily disabled due to python error
-Plug 'rust-lang/rust.vim'
+"
+" Plug 'ludovicchabant/vim-gutentags'  "making things really slow?  TODO: RE-ENABLE?
+Plug 'sirver/UltiSnips' "note: using coc-snippets https://github.com/neoclide/coc-snippets for the autocomplete
+" Plug 'rust-lang/rust.vim' " re-enable if needed
 Plug 'christoomey/vim-tmux-navigator'
 " Plug 'benmills/vimux'  " never use
 " Plug 'vim-syntastic/syntastic'
@@ -33,21 +34,21 @@ Plug 'christoomey/vim-tmux-navigator'
 " Plug 'scrooloose/nerdtree'   "does annoying switching
 " Plug 'chr4/nginx.vim'  "never really use it
 Plug 'tpope/vim-fugitive'
-Plug 'w0rp/ale'
+" Plug 'w0rp/ale' TODO - RE-ENABLE?
 " Plug 'Yggdroot/indentLine' -- this was setting conceallevel=2, which made
 Plug 'nathanaelkane/vim-indent-guides'
 " json file quotation marks hidden - very annoying
 
-Plug 'elixir-editors/vim-elixir'
-Plug 'mhinz/vim-mix-format'
-Plug 'slashmili/alchemist.vim'
-Plug 'vim-scripts/indentpython.vim'
+" Plug 'elixir-editors/vim-elixir' - no longer using
+" Plug 'mhinz/vim-mix-format' - more elixir stuff
+" Plug 'slashmili/alchemist.vim' - elixir integration, not used
+" Plug 'vim-scripts/indentpython.vim'
 
 " JS/React/Flow
-Plug 'pangloss/vim-javascript'
-Plug 'flowtype/vim-flow'
+" Plug 'pangloss/vim-javascript'
+" Plug 'flowtype/vim-flow'
 " Plug 'amadeus/vim-xml'  ' this breaks .ts files
-Plug 'amadeus/vim-jsx'
+" Plug 'amadeus/vim-jsx'
 
 " Typescript
 Plug 'leafgarland/typescript-vim'
@@ -367,17 +368,19 @@ endfunction
 
 " gutentags
 " add gutentags progress to status line
-:set statusline+=%{gutentags#statusline()}
-let g:gutentags_ctags_exclude = ["*.min.js", "*.min.css", "build", "vendor", ".git", "public", "elm-stuff", "tmp", "*.json", "node_modules", ".yarn-cache"]
+" TODO - RE-ENABLE?
+" :set statusline+=%{gutentags#statusline()}
+" let g:gutentags_ctags_exclude = ["*.min.js", "*.min.css", "build", "vendor", ".git", "public", "elm-stuff", "tmp", "*.json", "node_modules", ".yarn-cache"]
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "" ELM
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-let g:ycm_semantic_triggers = {
-     \ 'elm' : ['.'],
-     \}
+" TODO - RE-ENABLE?
+" let g:ycm_semantic_triggers = {
+"      \ 'elm' : ['.'],
+"      \}
 
 autocmd BufWritePost *.elm call elm#Lint()
 
@@ -683,5 +686,7 @@ let g:ale_python_black_options = '--line-length=100'
 "  \ 'errorformat': neomake#makers#ft#javascript#eslint()['errorformat']
 "  \}
 
+" CocPrettier
 
+command! -nargs=0 Prettier :call CocAction('runCommand', 'prettier.formatFile')
 
