@@ -22,5 +22,17 @@
       "rootPatterns": [".flowconfig"]
     }
   },
-  "coc.preferences.formatOnSaveFiletypes": ["*"]
+  "coc.preferences.formatOnSaveFiletypes": [
+    "json",
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "haml",
+    "markdown",
+    "scss"
+  ],
+  "prettier": {
+    "onlyUseLocalVersion": false
+  }
 }
