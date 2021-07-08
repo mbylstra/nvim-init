@@ -149,3 +149,33 @@ snippet cssmodulesdeclaration
         , bar = ""
         }
 endsnippet
+
+snippet paragraphimport
+import Paragraph.Paragraph as Paragraph exposing (TypeVariant(..))
+endsnippet
+
+snippet paragraphbody
+Paragraph.view
+    (Paragraph.p |> Paragraph.variant Body)
+    []
+endsnippet
+
+snippet boximport
+import Box.Box as Box exposing (..)
+endsnippet
+
+snippet box
+box [ marginBottom 1 ]
+    []
+endsnippet
+
+snippet headingimport
+import Heading.Heading as Heading exposing (TypeVariant(..))
+endsnippet
+
+snippet heading
+Heading.view
+    (Heading.h2 |> Heading.variant Heading2)
+    [ Html.text "Heading2" ]
+endsnippet
+
