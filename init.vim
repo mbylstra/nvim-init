@@ -571,7 +571,7 @@ set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 "" JAVASCRIPT
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-let g:flow#showquickfix = 0
+" let g:flow#showquickfix = 0
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
