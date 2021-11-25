@@ -19,6 +19,9 @@ let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -l -g ""'
 " Plug 'Valloric/YouCompleteMe'
 Plug 'breuckelen/vim-resize'
 Plug 'scrooloose/nerdcommenter'
+Plug 'tpope/vim-commentary'
+Plug 'suy/vim-context-commentstring'
+Plug 'maxmellon/vim-jsx-pretty'
 Plug 'tpope/vim-surround'
 " Plug 'rafi/awesome-vim-colorschemes'  "never use it
 " Plug 'sbdchd/neoformat'   "ale does this now?
@@ -185,6 +188,7 @@ map <Leader>L :BLines<CR> "now window nav
 " map <Leader>C :Commands<CR> "conflict with nerd commenter
 "map <Leader>e :Lexplore<CR>
 " map <Leader>e :call ToggleNetrw()<CR>
+" map <Leader>cc gc<CR>
 map <Leader>e :Explore<CR>
 map <Leader>r :Rex<CR>
 map <Leader>q :q<CR>
