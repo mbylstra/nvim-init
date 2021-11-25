@@ -37,7 +37,7 @@ Plug 'christoomey/vim-tmux-navigator'
 " Plug 'scrooloose/nerdtree'   "does annoying switching
 " Plug 'chr4/nginx.vim'  "never really use it
 Plug 'tpope/vim-fugitive'
-" Plug 'w0rp/ale' TODO - RE-ENABLE?
+Plug 'w0rp/ale'
 " Plug 'Yggdroot/indentLine' -- this was setting conceallevel=2, which made
 Plug 'nathanaelkane/vim-indent-guides'
 " json file quotation marks hidden - very annoying
@@ -638,13 +638,14 @@ let g:ale_fix_on_save = 1
 " " let g:ale_javascript_prettier_options = '--double-quotes --trailing-comma es5'
 let g:ale_linters = {
 \   'scss': ['scsslint'],
-\   'python': ['flake8', 'mypy'],
-\   'javascript': ['eslint', 'flow'],
-\   'javascript.jsx': ['eslint', 'flow'],
-\   'typescript': ['eslint'],
-\   'typescript.tsx': ['eslint'],
 \   'bash': ['shellcheck'],
+\   'ruby': ['rubocop'],
 \}
+" \   'python': ['flake8', 'mypy'],
+" \   'javascript': ['eslint', 'flow'],
+" \   'javascript.jsx': ['eslint', 'flow'],
+" \   'typescript': ['eslint'],
+" \   'typescript.tsx': ['eslint'],
 " " \   'typescript': ['tslint', 'typecheck', 'tsserver'],
 " " \   'typescript.tsx': ['tslint', 'typecheck', 'tsserver'],
 let g:ale_fixers = {
