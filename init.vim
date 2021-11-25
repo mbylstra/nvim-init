@@ -198,9 +198,9 @@ map <Leader>t <C-^>
 map <Leader>d :ElmShowDocs<CR>
 map <Leader>R :ElmTest<CR>
 nmap <Leader>p o<ESC>p
-nmap <Leader>tb :TagbarOpen fg<CR>
-nmap <Leader>tbc :TagbarClose<CR>
-nmap <Leader>t :NERDTreeToggle<CR>
+" nmap <Leader>tb :TagbarOpen fg<CR>
+" nmap <Leader>tbc :TagbarClose<CR>
+" nmap <Leader>t :NERDTreeToggle<CR>
 " show current line number
 map <Leader>ln :echo line(".")<CR>
 " follow tag, split window and offer selection if multiple options found
