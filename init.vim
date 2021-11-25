@@ -14,7 +14,7 @@ Plug 'rakr/vim-one'
 " fzf
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
-let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -l -g ""'
+let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g ""'
 
 " Plug 'Valloric/YouCompleteMe'
 Plug 'breuckelen/vim-resize'
