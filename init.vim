@@ -55,7 +55,8 @@ Plug 'nathanaelkane/vim-indent-guides'
 
 " Typescript
 Plug 'leafgarland/typescript-vim'
-Plug 'peitalin/vim-jsx-typescript'
+Plug 'maxmellon/vim-jsx-pretty' " I think this needs to go after typescript-vim
+" Plug 'peitalin/vim-jsx-typescript'
 " Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
