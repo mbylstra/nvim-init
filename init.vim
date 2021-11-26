@@ -175,8 +175,13 @@ endif
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let mapleader="\<SPACE>"
 
-map <Leader>a :Ag<CR>
+" map <Leader>a :Ag<CR>
 command! -bang -nargs=* Ag call fzf#vim#ag(<q-args>, {'options': '--delimiter : --nth 4..'}, <bang>0) "don't let Ag search filenames https://github.com/junegunn/fzf.vim/issues/346
+
+" switching to ripgrep, with the --hidden argument so that I can search inside dirs like .buildkite
+map <Leader>a :Rg<CR>
+command! -bang -nargs=* Rg call fzf#vim#grep("rg --hidden --column --line-number --no-heading --color=always --smart-case ".shellescape(<q-args>), 1, {'options': '--delimiter : --nth 4..'}, <bang>0)
+
 map <Leader>f :Files<CR>
 " files in current directory
 nnoremap <silent> <Leader>fc :Files <C-R>=expand('%:h')<CR><CR><Paste>s
